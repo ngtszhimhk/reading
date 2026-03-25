@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>互動英文閱讀理解 - Bibi the Little Ant</title>
+    <title>互動英文閱讀理解 - Amazing Animals 1</title>
     <style>
         body { margin: 0; font-family: "Microsoft JhengHei", Arial, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
@@ -21,14 +21,11 @@
         .content-wrapper { position: relative; display: inline-block; width: 100%; min-height: 100%; }
         
         .text-content { 
-            line-height: 4.5; /* 隔行排版更寬鬆，方便小五學生閱讀 */
+            line-height: 4.5; 
             font-size: 24px; 
             position: relative;
             z-index: 1;
         }
-        
-        /* Title styling */
-        .story-title { font-size: 32px; font-weight: bold; text-align: center; margin-bottom: 20px; line-height: 2; color: #333; }
 
         /* Canvas for Drawing */
         #drawCanvas { position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; }
@@ -52,6 +49,11 @@
         .correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         
+        /* Dictionary & Images styling */
+        .dictionary-box { background-color: #fafafa; border-left: 4px solid #007bff; padding: 10px; margin: 10px 0; font-size: 15px; line-height: 1.6; font-family: sans-serif; }
+        .dictionary-box i { color: #555; }
+        .quiz-image { max-width: 100%; height: auto; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+
         .submit-btn { padding: 12px 24px; font-size: 18px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; margin-bottom: 30px; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .submit-btn:hover { background-color: #0056b3; }
 
@@ -80,78 +82,92 @@
         <div id="quiz-container">
             
             <div class="question-box">
-                <div class="question-title">1. Bibi lives ________.</div>
+                <div class="question-title">1. In line 4, the word ‘intelligent’ means _________.</div>
                 <div class="options">
-                    <label><input type="radio" name="q1" value="A"> A. in a tree</label>
-                    <label><input type="radio" name="q1" value="B"> B. in a hole</label>
-                    <label><input type="radio" name="q1" value="C"> C. on the grass</label>
-                    <label><input type="radio" name="q1" value="D"> D. under a stone</label>
+                    <label><input type="radio" name="q1" value="A"> A. beautiful</label>
+                    <label><input type="radio" name="q1" value="B"> B. clever</label>
+                    <label><input type="radio" name="q1" value="C"> C. dangerous</label>
+                    <label><input type="radio" name="q1" value="D"> D. shy</label>
                 </div>
                 <div class="feedback" id="feedback-q1"></div>
             </div>
             
             <div class="question-box">
-                <div class="question-title">2. Why does Bibi go out?</div>
+                <div class="question-title">2. A common octopus is a ‘great escape artist’ because it _________.</div>
                 <div class="options">
-                    <label><input type="radio" name="q2" value="A"> A. To play with his friends</label>
-                    <label><input type="radio" name="q2" value="B"> B. To look for his family</label>
-                    <label><input type="radio" name="q2" value="C"> C. To find some food</label>
-                    <label><input type="radio" name="q2" value="D"> D. To take a walk</label>
+                    <label><input type="radio" name="q2" value="A"> A. has blue blood</label>
+                    <label><input type="radio" name="q2" value="B"> B. has many hearts</label>
+                    <label><input type="radio" name="q2" value="C"> C. is good at finding puzzles</label>
+                    <label><input type="radio" name="q2" value="D"> D. can change colour</label>
                 </div>
                 <div class="feedback" id="feedback-q2"></div>
             </div>
 
             <div class="question-box">
-                <div class="question-title">3. What does Bibi find?</div>
+                <div class="question-title">3. Read lines 5 – 6. ‘This gives it a chance to escape.’ The word ‘This’ refers to _________.</div>
                 <div class="options">
-                    <label><input type="radio" name="q3" value="A"> A. A big apple</label>
-                    <label><input type="radio" name="q3" value="B"> B. A piece of cake</label>
-                    <label><input type="radio" name="q3" value="C"> C. A sweet candy</label>
-                    <label><input type="radio" name="q3" value="D"> D. A piece of chocolate</label>
+                    <label><input type="radio" name="q3" value="A"> A. changing its size</label>
+                    <label><input type="radio" name="q3" value="B"> B. losing an arm</label>
+                    <label><input type="radio" name="q3" value="C"> C. shooting ink</label>
+                    <label><input type="radio" name="q3" value="D"> D. using tools</label>
                 </div>
                 <div class="feedback" id="feedback-q3"></div>
             </div>
 
             <div class="question-box">
-                <div class="question-title">4. How does Bibi feel when he sees the food?</div>
+                <div class="question-title">4. Which picture shows an Arctic tern?</div>
+                <img src="image_7b4127.png" alt="Pictures of birds" class="quiz-image">
                 <div class="options">
-                    <label><input type="radio" name="q4" value="A"> A. Sad</label>
-                    <label><input type="radio" name="q4" value="B"> B. Tired</label>
-                    <label><input type="radio" name="q4" value="C"> C. Angry</label>
-                    <label><input type="radio" name="q4" value="D"> D. Excited</label>
+                    <label><input type="radio" name="q4" value="A"> A.</label>
+                    <label><input type="radio" name="q4" value="B"> B.</label>
+                    <label><input type="radio" name="q4" value="C"> C.</label>
+                    <label><input type="radio" name="q4" value="D"> D.</label>
                 </div>
                 <div class="feedback" id="feedback-q4"></div>
             </div>
 
             <div class="question-box">
-                <div class="question-title">5. The word 'it' refers to ________.</div>
+                <div class="question-title">5. Arctic terns are famous for _________.</div>
                 <div class="options">
-                    <label><input type="radio" name="q5" value="A"> A. the hole</label>
-                    <label><input type="radio" name="q5" value="B"> B. the grass</label>
-                    <label><input type="radio" name="q5" value="C"> C. the family</label>
-                    <label><input type="radio" name="q5" value="D"> D. the chocolate</label>
+                    <label><input type="radio" name="q5" value="A"> A. flying a long way</label>
+                    <label><input type="radio" name="q5" value="B"> B. flying fast</label>
+                    <label><input type="radio" name="q5" value="C"> C. having the longest tails</label>
+                    <label><input type="radio" name="q5" value="D"> D. loving winter</label>
                 </div>
                 <div class="feedback" id="feedback-q5"></div>
             </div>
 
             <div class="question-box">
-                <div class="question-title">6. Why does Bibi go home?</div>
+                <div class="question-title">6. Arctic terns fly back to the Arctic to enjoy _________.</div>
                 <div class="options">
-                    <label><input type="radio" name="q6" value="A"> A. He is hungry.</label>
-                    <label><input type="radio" name="q6" value="B"> B. He needs help.</label>
-                    <label><input type="radio" name="q6" value="C"> C. He wants to sleep.</label>
-                    <label><input type="radio" name="q6" value="D"> D. He is afraid of the dark.</label>
+                    <label><input type="radio" name="q6" value="A"> A. spring</label>
+                    <label><input type="radio" name="q6" value="B"> B. summer</label>
+                    <label><input type="radio" name="q6" value="C"> C. autumn</label>
+                    <label><input type="radio" name="q6" value="D"> D. winter</label>
                 </div>
                 <div class="feedback" id="feedback-q6"></div>
             </div>
 
             <div class="question-box">
-                <div class="question-title">7. Who helps Bibi move the food?</div>
+                <div class="question-title">7. In line 13, what does ‘nest’ mean?</div>
+                <div class="dictionary-box">
+                    <strong>nest</strong> /nest/<br>
+                    <i>noun</i><br>
+                    1. a place where a bird lays eggs<br>
+                    &nbsp;&nbsp;&nbsp;◊ The bird built a nest in the tree.<br>
+                    2. the home<br>
+                    &nbsp;&nbsp;&nbsp;◊ Her son left the nest and moved away.<br>
+                    <i>verb</i><br>
+                    3. to build a place to lay eggs<br>
+                    &nbsp;&nbsp;&nbsp;◊ Some birds like to nest under the roof.<br>
+                    4. to fit something inside another thing<br>
+                    &nbsp;&nbsp;&nbsp;◊ We can nest the smaller box inside the larger box.
+                </div>
                 <div class="options">
-                    <label><input type="radio" name="q7" value="A"> A. His friends</label>
-                    <label><input type="radio" name="q7" value="B"> B. His family</label>
-                    <label><input type="radio" name="q7" value="C"> C. Other ants</label>
-                    <label><input type="radio" name="q7" value="D"> D. Some birds</label>
+                    <label><input type="radio" name="q7" value="A"> A. 1</label>
+                    <label><input type="radio" name="q7" value="B"> B. 2</label>
+                    <label><input type="radio" name="q7" value="C"> C. 3</label>
+                    <label><input type="radio" name="q7" value="D"> D. 4</label>
                 </div>
                 <div class="feedback" id="feedback-q7"></div>
             </div>
@@ -164,50 +180,52 @@
         // --- 1. 動態生成文章、發音與中文詞義 ---
         const storyData = [
             // 標題
-            { en: "Part 3", zh: "第三部分", isTitle: true }, { en: "<br>", zh: "" },
-            { en: "Bibi", zh: "嗶嗶", isTitle: true }, { en: "the", zh: "那隻", isTitle: true }, { en: "Little", zh: "小", isTitle: true }, { en: "Ant", zh: "螞蟻", isTitle: true }, { en: "<br><br>", zh: "" },
-            // 第一段
-            { en: "Bibi", zh: "嗶嗶" }, { en: "is", zh: "是" }, { en: "a", zh: "一隻" }, { en: "little", zh: "小" }, { en: "ant.", zh: "螞蟻。" },
-            { en: "He", zh: "他" }, { en: "lives", zh: "居住" }, { en: "in", zh: "在" }, { en: "a", zh: "一個" }, { en: "small", zh: "小" }, { en: "hole", zh: "洞穴" }, { en: "with", zh: "和" }, { en: "his", zh: "他的" }, { en: "family.", zh: "家人。" },
-            { en: "One", zh: "有一" }, { en: "day,", zh: "天，" }, { en: "Bibi", zh: "嗶嗶" }, { en: "goes", zh: "去" }, { en: "out", zh: "外面" }, { en: "to", zh: "去" }, { en: "look", zh: "尋找" }, { en: "for", zh: "為" }, { en: "food.", zh: "食物。" },
-            { en: "He", zh: "他" }, { en: "walks", zh: "走" }, { en: "a", zh: "一段" }, { en: "long", zh: "長" }, { en: "way.", zh: "路。" },
-            { en: "He", zh: "他" }, { en: "is", zh: "覺得" }, { en: "tired", zh: "疲倦" }, { en: "and", zh: "和" }, { en: "hungry.", zh: "飢餓。" }, { en: "<br><br>", zh: "" },
-            // 第二段
-            { en: "Suddenly,", zh: "突然間，" }, { en: "Bibi", zh: "嗶嗶" }, { en: "smells", zh: "聞到" }, { en: "something", zh: "一些" }, { en: "sweet.", zh: "甜的東西。" },
-            { en: "He", zh: "他" }, { en: "follows", zh: "跟著" }, { en: "the", zh: "那" }, { en: "smell", zh: "氣味" }, { en: "and", zh: "並" }, { en: "finds", zh: "發現" }, { en: "a", zh: "一" }, { en: "big", zh: "大" }, { en: "piece", zh: "塊" }, { en: "of", zh: "的" }, { en: "chocolate.", zh: "朱古力。" },
-            { en: "It", zh: "它" }, { en: "is", zh: "在" }, { en: "on", zh: "上面" }, { en: "the", zh: "那" }, { en: "grass.", zh: "草地。" },
-            { en: "Bibi", zh: "嗶嗶" }, { en: "is", zh: "覺得" }, { en: "very", zh: "非常" }, { en: "excited.", zh: "興奮。" },
-            { en: "He", zh: "他" }, { en: "wants", zh: "想要" }, { en: "to", zh: "去" }, { en: "bring", zh: "帶" }, { en: "the", zh: "那" }, { en: "chocolate", zh: "朱古力" }, { en: "home.", zh: "回家。" },
-            { en: "He", zh: "他" }, { en: "tries", zh: "嘗試" }, { en: "to", zh: "去" }, { en: "push", zh: "推" }, { en: "it,", zh: "它，" }, { en: "but", zh: "但是" }, { en: "it", zh: "它" }, { en: "is", zh: "是" }, { en: "too", zh: "太" }, { en: "heavy.", zh: "重了。" }, { en: "<br><br>", zh: "" },
-            // 第三段
-            { en: "Bibi", zh: "嗶嗶" }, { en: "runs", zh: "跑" }, { en: "back", zh: "回" }, { en: "home", zh: "家" }, { en: "to", zh: "去" }, { en: "get", zh: "找" }, { en: "help.", zh: "幫忙。" },
-            { en: "He", zh: "他" }, { en: "tells", zh: "告訴" }, { en: "his", zh: "他的" }, { en: "family", zh: "家人" }, { en: "about", zh: "關於" }, { en: "the", zh: "那" }, { en: "chocolate.", zh: "朱古力。" },
-            { en: "His", zh: "他的" }, { en: "father,", zh: "爸爸，" }, { en: "mother,", zh: "媽媽，" }, { en: "brothers", zh: "兄弟" }, { en: "and", zh: "和" }, { en: "sisters", zh: "姐妹" }, { en: "all", zh: "全部" }, { en: "come", zh: "來" }, { en: "out.", zh: "外面。" },
-            { en: "They", zh: "他們" }, { en: "work", zh: "工作" }, { en: "together.", zh: "一起。" },
-            { en: "Finally,", zh: "最後，" }, { en: "they", zh: "他們" }, { en: "move", zh: "搬動" }, { en: "the", zh: "那" }, { en: "chocolate", zh: "朱古力" }, { en: "into", zh: "進去" }, { en: "their", zh: "他們的" }, { en: "hole.", zh: "洞穴。" },
-            { en: "They", zh: "他們" }, { en: "have", zh: "有" }, { en: "a", zh: "一個" }, { en: "big", zh: "大" }, { en: "feast.", zh: "盛宴（大餐）。" }
+            { en: "Amazing", zh: "奇妙的", isTitle: true }, { en: "Animals", zh: "動物", isTitle: true }, { en: "1", zh: "一", isTitle: true }, { en: "<br><br>", zh: "" },
+            
+            // Subtitle 1
+            { en: "From", zh: "來自", isSubtitle: true }, { en: "the", zh: "那", isSubtitle: true }, { en: "sea", zh: "海洋", isSubtitle: true }, { en: "<br>", zh: "" },
+            
+            // 段落 1
+            { en: "The", zh: "這" }, { en: "common", zh: "普通的" }, { en: "octopus", zh: "八爪魚" }, { en: "is", zh: "是" }, { en: "a", zh: "一隻" }, { en: "sea", zh: "海洋" }, { en: "animal", zh: "動物" }, { en: "with", zh: "有著" }, { en: "eight", zh: "八條" }, { en: "arms,", zh: "手臂，" }, { en: "three", zh: "三個" }, { en: "hearts", zh: "心臟" }, { en: "and", zh: "和" }, { en: "blue", zh: "藍色的" }, { en: "blood.", zh: "血液。" },
+            { en: "It", zh: "牠" }, { en: "is", zh: "是" }, { en: "an", zh: "一隻" }, { en: "intelligent", zh: "聰明的" }, { en: "animal", zh: "動物" }, { en: "that", zh: "可以" }, { en: "can", zh: "能" }, { en: "solve", zh: "解決" }, { en: "puzzles", zh: "難題" }, { en: "and", zh: "並" }, { en: "use", zh: "使用" }, { en: "tools.", zh: "工具。" },
+            { en: "Moreover,", zh: "此外，" }, { en: "it", zh: "牠" }, { en: "is", zh: "是" }, { en: "a", zh: "一個" }, { en: "‘great", zh: "「偉大的" }, { en: "escape", zh: "逃脫" }, { en: "artist’.", zh: "藝術家」。" },
+            { en: "When", zh: "當" }, { en: "in", zh: "處於" }, { en: "danger,", zh: "危險時，" }, { en: "it", zh: "牠" }, { en: "shoots", zh: "噴出" }, { en: "ink.", zh: "墨汁。" },
+            { en: "This", zh: "這" }, { en: "gives", zh: "給予" }, { en: "it", zh: "牠" }, { en: "a", zh: "一個" }, { en: "chance", zh: "機會" }, { en: "to", zh: "去" }, { en: "escape.", zh: "逃跑。" },
+            { en: "To", zh: "為了" }, { en: "hide", zh: "隱藏" }, { en: "itself,", zh: "自己，" }, { en: "it", zh: "牠" }, { en: "can", zh: "可以" }, { en: "change", zh: "改變" }, { en: "its", zh: "牠的" }, { en: "skin", zh: "皮膚" }, { en: "colour", zh: "顏色" }, { en: "to", zh: "去" }, { en: "match", zh: "配合" }, { en: "the", zh: "那" }, { en: "environment.", zh: "環境。" },
+            { en: "It", zh: "牠" }, { en: "has", zh: "有" }, { en: "a", zh: "一個" }, { en: "soft", zh: "柔軟的" }, { en: "body", zh: "身體" }, { en: "and", zh: "並且" }, { en: "can", zh: "能" }, { en: "fit", zh: "擠進" }, { en: "in", zh: "在" }, { en: "small", zh: "狹小的" }, { en: "spaces", zh: "空間" }, { en: "too.", zh: "裡。" }, { en: "<br><br>", zh: "" },
+
+            // Subtitle 2
+            { en: "From", zh: "來自" , isSubtitle: true}, { en: "the", zh: "那" , isSubtitle: true}, { en: "end", zh: "盡頭" , isSubtitle: true}, { en: "of", zh: "的" , isSubtitle: true}, { en: "the", zh: "那" , isSubtitle: true}, { en: "Earth", zh: "地球" , isSubtitle: true}, { en: "<br>", zh: "" },
+
+            // 段落 2
+            { en: "The", zh: "這" }, { en: "Arctic", zh: "北極" }, { en: "tern", zh: "燕鷗" }, { en: "is", zh: "是" }, { en: "a", zh: "一種" }, { en: "bird", zh: "鳥類" }, { en: "with", zh: "有著" }, { en: "narrow", zh: "狹窄的" }, { en: "wings", zh: "翅膀" }, { en: "and", zh: "和" }, { en: "a", zh: "一條" }, { en: "tail", zh: "尾巴" }, { en: "with", zh: "有著" }, { en: "two", zh: "兩個" }, { en: "points.", zh: "尖端。" },
+            { en: "It", zh: "牠" }, { en: "is", zh: "是" }, { en: "well", zh: "非常" }, { en: "known", zh: "著名的" }, { en: "for", zh: "因為" }, { en: "having", zh: "擁有" }, { en: "one", zh: "其中一個" }, { en: "of", zh: "的" }, { en: "the", zh: "那" }, { en: "longest", zh: "最長的" }, { en: "flying", zh: "飛行" }, { en: "journeys.", zh: "旅程。" },
+            { en: "It", zh: "牠" }, { en: "always", zh: "總是" }, { en: "follows", zh: "跟隨" }, { en: "the", zh: "那" }, { en: "summer", zh: "夏天的" }, { en: "sun.", zh: "太陽。" },
+            { en: "Every", zh: "每年" }, { en: "year,", zh: "年，" }, { en: "before", zh: "在...之前" }, { en: "winter", zh: "冬天" }, { en: "comes,", zh: "來臨，" }, { en: "it", zh: "牠" }, { en: "flies", zh: "飛" }, { en: "from", zh: "從" }, { en: "the", zh: "那" }, { en: "Arctic", zh: "北極" }, { en: "to", zh: "到" }, { en: "Antarctica", zh: "南極洲" }, { en: "to", zh: "去" }, { en: "enjoy", zh: "享受" }, { en: "summer", zh: "夏天" }, { en: "in", zh: "在" }, { en: "the", zh: "那" }, { en: "south.", zh: "南方。" },
+            { en: "When", zh: "當" }, { en: "the", zh: "那" }, { en: "season", zh: "季節" }, { en: "changes,", zh: "改變時，" }, { en: "it", zh: "牠" }, { en: "returns", zh: "返回" }, { en: "north", zh: "北方" }, { en: "to", zh: "到" }, { en: "the", zh: "那" }, { en: "Arctic.", zh: "北極。" },
+            { en: "There,", zh: "在那裡，" }, { en: "it", zh: "牠" }, { en: "often", zh: "經常" }, { en: "finds", zh: "尋找" }, { en: "a", zh: "一個" }, { en: "suitable", zh: "合適的" }, { en: "area", zh: "地方" }, { en: "to", zh: "去" }, { en: "nest", zh: "築巢" }, { en: "and", zh: "並" }, { en: "take", zh: "照顧" }, { en: "care", zh: "照顧" }, { en: "of", zh: "的" }, { en: "its", zh: "牠的" }, { en: "babies.", zh: "寶寶。" }
         ];
 
         const textContent = document.getElementById('text-content');
         
         let htmlBuilder = "";
         storyData.forEach(word => {
-            if(word.en === "<br><br>") {
-                htmlBuilder += "<br><br>";
-                return;
-            }
-            if(word.en === "<br>") {
-                htmlBuilder += "<br>";
+            if(word.en === "<br><br>" || word.en === "<br>") {
+                htmlBuilder += word.en;
                 return;
             }
 
             // 清理標點符號以用於發音
             const cleanWord = word.en.replace(/[^a-zA-Z0-9]/g, ''); 
-            const isTitleStyle = word.isTitle ? "font-size: 32px;" : "";
+            
+            // 標題及副標題大小
+            let style = "";
+            if (word.isTitle) style = "font-size: 32px; color: #1a5276;";
+            if (word.isSubtitle) style = "font-size: 28px; color: #900C3F;";
             
             const wordHTML = `
                 <div class="word-group">
-                    <ruby style="${isTitleStyle}">${word.en}<rt>${word.zh}</rt></ruby>
+                    <ruby style="${style}">${word.en}<rt>${word.zh}</rt></ruby>
                     <span class="speaker-icon" onclick="speakWord('${cleanWord}')">🔊</span>
                 </div>
             `;
@@ -218,8 +236,8 @@
         function speakWord(text) {
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-GB'; // 設定為英式發音
-                utterance.rate = 0.8; // 放慢語速適合小學生
+                utterance.lang = 'en-GB'; 
+                utterance.rate = 0.8; 
                 window.speechSynthesis.speak(utterance);
             } else {
                 alert("你的瀏覽器不支援語音功能。");
@@ -259,7 +277,6 @@
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mouseout', stopDrawing);
 
-        // 支援觸控螢幕 (iPad / Tablet)
         canvas.addEventListener('touchstart', function(e){ e.preventDefault(); startDrawing(e.touches[0]); }, {passive: false});
         canvas.addEventListener('touchmove', function(e){ e.preventDefault(); draw(e.touches[0]); }, {passive: false});
         canvas.addEventListener('touchend', stopDrawing);
@@ -305,13 +322,13 @@
 
         // --- 3. 自動批改與回饋 ---
         const correctAnswers = {
-            q1: { answer: 'B', explanation: '文章提到：He lives in a small hole (他住在一個小洞穴裡)。' },
-            q2: { answer: 'C', explanation: '文章提到：Bibi goes out to look for food (Bibi 出去找食物)。' },
-            q3: { answer: 'D', explanation: '文章提到：finds a big piece of chocolate (找到一大塊朱古力)。' },
-            q4: { answer: 'D', explanation: '文章提到：Bibi is very excited (Bibi 非常興奮)。' },
-            q5: { answer: 'D', explanation: '"He tries to push it" 這裡的 "it" 是指他想要推動那塊朱古力 (chocolate)。' },
-            q6: { answer: 'B', explanation: '文章提到：Bibi runs back home to get help (Bibi 跑回家找幫手)。' },
-            q7: { answer: 'B', explanation: '文章提到：His father, mother, brothers and sisters all come out... 這些都是他的家人 (family)。' }
+            q1: { answer: 'B', explanation: 'intelligent (聰明的) 的意思與 clever (聰明的) 最相近。' },
+            q2: { answer: 'D', explanation: '文章提到：To hide itself, it can change its skin colour... (為了隱藏自己，牠會改變皮膚顏色)。其他選項並非用作逃走/隱藏。' },
+            q3: { answer: 'C', explanation: '前一句提到：When in danger, it shoots ink (遇到危險時，牠會噴出墨汁)。所以 This 是指噴墨汁這個動作。' },
+            q4: { answer: 'C', explanation: '文章形容北極燕鷗有 narrow wings (狹窄的翅膀) 和 a tail with two points (分岔/有兩個尖端的尾巴)。圖 C 的鳥符合這個特徵。' },
+            q5: { answer: 'A', explanation: '文章提到：It is well known for having one of the longest flying journeys (牠以擁有最長的飛行旅程而聞名)。' },
+            q6: { answer: 'B', explanation: '文章提到：It always follows the summer sun (牠總是追隨夏天的太陽)。所以飛回北極也是為了享受夏天。' },
+            q7: { answer: 'C', explanation: '在句子 "finds a suitable area to nest" 中，nest 是作為「動詞 (verb)」使用，意思是「築巢 (to build a place to lay eggs)」。' }
         };
 
         function checkAnswers() {
