@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動英文閱讀理解</title>
+    <style>
+        body { margin: 0; font-family: "Microsoft JhengHei", Arial, sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* Layout */
+        .top-pane { flex: 1; border-bottom: 2px solid #ccc; display: flex; flex-direction: column; background-color: #fcfcfc; position: relative; }
+        .bottom-pane { flex: 1; overflow-y: auto; padding: 20px; background-color: #f0f8ff; }
+        
+        /* Toolbar */
+        .toolbar { padding: 10px; background-color: #e0e0e0; display: flex; gap: 10px; z-index: 10; border-bottom: 1px solid #ccc; }
+        .toolbar button { padding: 8px 12px; font-size: 14px; cursor: pointer; border: 1px solid #999; border-radius: 4px; background-color: white; }
+        .toolbar button.active { background-color: #4CAF50; color: white; border-color: #4CAF50; }
+
+        /* Reading Area */
+        .scroll-container { flex: 1; overflow-y: auto; position: relative; padding: 20px; }
+        .content-wrapper { position: relative; display: inline-block; width: 100%; min-height: 100%; }
+        
+        .text-content { 
+            line-height: 4; /* 隔行排版 */
+            font-size: 24px; /* 適合小五學生閱讀的大小 */
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Canvas for Drawing */
+        #drawCanvas { position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; /* 預設不阻擋點擊喇叭 */ }
+
+        /* Word Styling */
+        .word-group { display: inline-flex; align-items: flex-end; margin-right: 15px; position: relative; }
+        ruby { font-size: 24px; color: #333; font-weight: bold; }
+        rt { font-size: 14px; color: #0066cc; font-weight: normal; margin-bottom: 5px; }
+        .speaker-icon { 
+            cursor: pointer; margin-left: 4px; font-size: 18px; color: #ff6600; 
+            padding: 2px; border-radius: 50%;
+        }
+        .speaker-icon:hover { background-color: #ffe6cc; }
+
+        /* Quiz Area */
+        .question-box { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .question-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .options label { display: block; margin-bottom: 8px; font-size: 16px; cursor: pointer; }
+        .feedback { margin-top: 10px; font-weight: bold; display: none; padding: 8px; border-radius: 4px; }
+        .correct { background-color: #d4edda; color: #155724; }
+        .incorrect { background-color: #f8d7da; color: #721c24; }
+        
+        .submit-btn { padding: 12px 24px; font-size: 18px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .submit-btn:hover { background-color: #0056b3; }
+
+    </style>
+</head>
+<body>
+
+    <div class="top-pane">
+        <div class="toolbar">
+            <button id="btn-read" class="active" onclick="setMode('read')">👆 閱讀模式 (可點擊發音)</button>
+            <button id="btn-pen" onclick="setMode('pen')">🖊️ 畫筆 (紅)</button>
+            <button id="btn-highlighter" onclick="setMode('highlighter')">🖍️ 螢光筆</button>
+            <button id="btn-eraser" onclick="setMode('eraser')">🧼 膠擦</button>
+        </div>
+        <div class="scroll-container" id="scroll-container">
+            <div class="content-wrapper" id="content-wrapper">
+                <div class="text-content" id="text-content">
+                    </div>
+                <canvas id="drawCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-pane">
+        <h2>閱讀理解問題 Reading Comprehension</h2>
+        <div id="quiz-container">
+            <div class="question-box">
+                <div class="question-title">1. Where did Jason and his family go last week?</div>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="A"> A. To a park</label>
+                    <label><input type="radio" name="q1" value="B"> B. To a museum</label>
+                    <label><input type="radio" name="q1" value="C"> C. To a school</label>
+                </div>
+                <div class="feedback" id="feedback-q1"></div>
+            </div>
+            
+            <div class="question-box">
+                <div class="question-title">2. How did Jason feel in the museum?</div>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="A"> A. Excited</label>
+                    <label><input type="radio" name="q2" value="B"> B. Sad</label>
+                    <label><input type="radio" name="q2" value="C"> C. Bored</label>
+                </div>
+                <div class="feedback" id="feedback-q2"></div>
+            </div>
+        </div>
+        <button class="submit-btn" onclick="checkAnswers()">✔️ 自動批改</button>
+    </div>
+
+    <script>
+        // --- 1. 動態生成文章、發音與中文詞義 ---
+        const storyData = [
+            { en: "Jason", zh: "傑森" }, { en: "and", zh: "和" }, { en: "his", zh: "他的" }, { en: "family", zh: "家人" },
+            { en: "went", zh: "去" }, { en: "to", zh: "到" }, { en: "a", zh: "一個" }, { en: "museum", zh: "博物館" },
+            { en: "last", zh: "上個" }, { en: "week.", zh: "星期。" }, { en: "<br><br>", zh: "" },
+            { en: "He", zh: "他" }, { en: "saw", zh: "看見" }, { en: "many", zh: "很多" }, { en: "old", zh: "舊的" },
+            { en: "things.", zh: "東西。" }, { en: "He", zh: "他" }, { en: "felt", zh: "感覺" }, { en: "very", zh: "非常" },
+            { en: "excited.", zh: "興奮。" }
+        ];
+
+        const textContent = document.getElementById('text-content');
+        storyData.forEach(word => {
+            if(word.en === "<br><br>") {
+                textContent.innerHTML += "<br>";
+                return;
+            }
+            // 清理標點符號以用於發音
+            const cleanWord = word.en.replace(/[^a-zA-Z]/g, ''); 
+            
+            const wordHTML = `
+                <div class="word-group">
+                    <ruby>${word.en}<rt>${word.zh}</rt></ruby>
+                    <span class="speaker-icon" onclick="speakWord('${cleanWord}')">🔊</span>
+                </div>
+            `;
+            textContent.innerHTML += wordHTML;
+        });
+
+        function speakWord(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-GB'; // 設定為英式發音
+                utterance.rate = 0.8; // 放慢語速適合小學生
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("你的瀏覽器不支援語音功能。");
+            }
+        }
+
+        // --- 2. 畫筆、螢光筆、膠擦功能 ---
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+        const wrapper = document.getElementById('content-wrapper');
+        
+        let isDrawing = false;
+        let currentMode = 'read'; // 'read', 'pen', 'highlighter', 'eraser'
+
+        // 初始化 Canvas 尺寸與文字區域一致
+        function resizeCanvas() {
+            canvas.width = wrapper.offsetWidth;
+            canvas.height = wrapper.offsetHeight;
+        }
+        window.onload = resizeCanvas;
+        window.onresize = resizeCanvas;
+        
+        // 觀察內容變化以調整 Canvas 大小
+        new ResizeObserver(resizeCanvas).observe(wrapper);
+
+        function setMode(mode) {
+            currentMode = mode;
+            // 更新按鈕樣式
+            document.querySelectorAll('.toolbar button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + mode).classList.add('active');
+
+            if (mode === 'read') {
+                canvas.style.pointerEvents = 'none'; // 讓滑鼠可以穿透點擊到喇叭
+            } else {
+                canvas.style.pointerEvents = 'auto'; // 讓 Canvas 捕捉畫畫動作
+            }
+        }
+
+        // 繪圖事件
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        function startDrawing(e) {
+            if (currentMode === 'read') return;
+            isDrawing = true;
+            draw(e);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            // 修正捲動偏差
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            if (currentMode === 'pen') {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 3;
+            } else if (currentMode === 'highlighter') {
+                ctx.globalCompositeOperation = 'multiply'; // 螢光筆效果
+                ctx.strokeStyle = 'rgba(255, 255, 0, 0.4)'; // 半透明黃色
+                ctx.lineWidth = 20;
+            } else if (currentMode === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out'; // 擦除效果
+                ctx.lineWidth = 30;
+            }
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        // --- 3. 自動批改與回饋 ---
+        const correctAnswers = {
+            q1: { answer: 'B', explanation: 'Well done! The passage says Jason and his family "went to a museum".' },
+            q2: { answer: 'A', explanation: 'Good job! The text says "He felt very excited."' }
+        };
+
+        function checkAnswers() {
+            for (let question in correctAnswers) {
+                const selected = document.querySelector(`input[name="${question}"]:checked`);
+                const feedbackDiv = document.getElementById(`feedback-${question}`);
+                
+                feedbackDiv.style.display = 'block';
+
+                if (!selected) {
+                    feedbackDiv.className = 'feedback incorrect';
+                    feedbackDiv.innerText = '請選擇一個答案！ (Please select an answer!)';
+                } else if (selected.value === correctAnswers[question].answer) {
+                    feedbackDiv.className = 'feedback correct';
+                    feedbackDiv.innerText = `✔️ 正確 (Correct)! ${correctAnswers[question].explanation}`;
+                } else {
+                    feedbackDiv.className = 'feedback incorrect';
+                    feedbackDiv.innerText = `❌ 不正確 (Incorrect). 正確答案是 (The correct answer is) ${correctAnswers[question].answer}.`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
